@@ -53,6 +53,7 @@ func (con *WebShopServer) Delete(param model.ShopDeleteParam) int64 {
 // BuyerShopProduct 买家查询商品列表
 func (con *WebShopServer) BuyerShopProduct(param model.ShopProductParam) []model.ShopProduct {
 	productList := make([]model.ShopProduct, 0)
+	// 返回所有已上架到商品
 	global.Db.Table("products").Where("status = 1 and shop_id = ?", param.Id).Find(&productList)
 	return productList
 }
