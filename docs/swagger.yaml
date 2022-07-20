@@ -1,0 +1,447 @@
+definitions:
+  model.ProductCreateParam:
+    properties:
+      category_id:
+        type: integer
+      detail:
+        type: string
+      image:
+        type: string
+      name:
+        type: string
+      price:
+        type: number
+      shop_id:
+        type: integer
+      store:
+        type: integer
+      type:
+        type: string
+    required:
+    - name
+    - price
+    type: object
+  model.ProductDeleteParam:
+    properties:
+      product_id:
+        type: integer
+    type: object
+  model.ProductModifyParam:
+    properties:
+      category_id:
+        type: integer
+      detail:
+        type: string
+      id:
+        type: integer
+      image:
+        type: string
+      name:
+        type: string
+      price:
+        type: number
+      shop_id:
+        type: integer
+      store:
+        type: integer
+      type:
+        type: string
+    required:
+    - id
+    - name
+    - price
+    type: object
+  model.ShopCreateParam:
+    properties:
+      detail:
+        type: string
+      name:
+        type: string
+      type:
+        type: string
+    required:
+    - name
+    - type
+    type: object
+  model.ShopDeleteParam:
+    properties:
+      shop_id:
+        type: integer
+    type: object
+  model.ShopModifyParam:
+    properties:
+      detail:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      type:
+        type: string
+    type: object
+  model.UserLoginParam:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /index:
+    get:
+      consumes:
+      - application/json
+      description: 这是一个测试方法
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: 测试
+      tags:
+      - Swagger测试
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: 用于用户登陆
+      parameters:
+      - description: 登陆参数
+        in: body
+        name: object
+        required: true
+        schema:
+          $ref: '#/definitions/model.UserLoginParam'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"msg":"用户登陆成功"}'
+          schema:
+            type: string
+        "400":
+          description: '{"msg":"用户登陆失败"}'
+          schema:
+            type: string
+      summary: 登陆
+      tags:
+      - 无需登陆
+  /product_create:
+    post:
+      consumes:
+      - application/json
+      description: 用于用户创建商品
+      parameters:
+      - description: 创建商品需要的参数
+        in: body
+        name: object
+        required: true
+        schema:
+          $ref: '#/definitions/model.ProductCreateParam'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"msg":"商品创建成功"}'
+          schema:
+            type: string
+        "400":
+          description: '{"msg":"商品创建失败"}'
+          schema:
+            type: string
+      summary: 创建商品
+      tags:
+      - 需要登陆
+  /product_delete:
+    delete:
+      consumes:
+      - application/json
+      description: 用于用户删除商品
+      parameters:
+      - description: 需要删除商品的id
+        in: body
+        name: object
+        required: true
+        schema:
+          $ref: '#/definitions/model.ProductDeleteParam'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"msg":"商品删除成功"}'
+          schema:
+            type: string
+        "400":
+          description: '{"msg":"商品删除失败"}'
+          schema:
+            type: string
+      summary: 删除商品
+      tags:
+      - 需要登陆
+  /product_detail:
+    get:
+      consumes:
+      - application/json
+      description: 用户可以根据输入商品id查看相应商品详情
+      parameters:
+      - in: query
+        name: productId
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"msg":"商品详情查询成功"}'
+          schema:
+            type: string
+        "400":
+          description: '{"msg":"商品详情查询失败"}'
+          schema:
+            type: string
+      summary: 查看商品详情
+      tags:
+      - 需要登陆
+  /product_flow:
+    get:
+      consumes:
+      - application/json
+      description: 接受商品id列表，返回对应商品信息
+      parameters:
+      - in: query
+        name: key_word
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"msg":"商品流查看成功"}'
+          schema:
+            type: string
+        "400":
+          description: '{"msg":"商品流查看失败"}'
+          schema:
+            type: string
+      summary: 查看商品推荐流
+      tags:
+      - 需要登陆
+  /product_list:
+    get:
+      consumes:
+      - application/json
+      description: 用户可以根据输入商品category_id查看相应商品列表
+      parameters:
+      - in: query
+        name: categoryId
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"msg":"商品列表查询成功"}'
+          schema:
+            type: string
+        "400":
+          description: '{"msg":"商品列表查询失败"}'
+          schema:
+            type: string
+      summary: 查看商品列表
+      tags:
+      - 需要登陆
+  /product_modify:
+    put:
+      consumes:
+      - application/json
+      description: 用于用户修改商品
+      parameters:
+      - description: 需要修改商品的参数
+        in: body
+        name: object
+        required: true
+        schema:
+          $ref: '#/definitions/model.ProductModifyParam'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"msg":"商品修改成功"}'
+          schema:
+            type: string
+        "400":
+          description: '{"msg":"商品修改失败"}'
+          schema:
+            type: string
+      summary: 修改商品
+      tags:
+      - 需要登陆
+  /product_search:
+    get:
+      consumes:
+      - application/json
+      description: 根据用户输入关键字搜索商品
+      parameters:
+      - in: query
+        name: key_word
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"msg":"商品搜索成功"}'
+          schema:
+            type: string
+        "400":
+          description: '{"msg":"商品搜索失败"}'
+          schema:
+            type: string
+      summary: 搜索商品
+      tags:
+      - 需要登陆
+  /shop_create:
+    post:
+      consumes:
+      - application/json
+      description: 卖家输入店铺信息，创建店铺
+      parameters:
+      - description: 创建商铺参数
+        in: body
+        name: object
+        required: true
+        schema:
+          $ref: '#/definitions/model.ShopCreateParam'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"msg":"店铺创建成功"}'
+          schema:
+            type: string
+        "400":
+          description: '{"msg":"店铺创建失败"}'
+          schema:
+            type: string
+      summary: 创建店铺
+      tags:
+      - 需要登陆
+  /shop_delete:
+    delete:
+      consumes:
+      - application/json
+      description: 用于卖家删除店铺
+      parameters:
+      - description: 删除店铺参数
+        in: body
+        name: object
+        required: true
+        schema:
+          $ref: '#/definitions/model.ShopDeleteParam'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"msg":"店铺删除成功"}'
+          schema:
+            type: string
+        "400":
+          description: '{"msg":"店铺删除失败"}'
+          schema:
+            type: string
+      summary: 删除店铺
+      tags:
+      - 需要登陆
+  /shop_list:
+    get:
+      consumes:
+      - application/json
+      description: 卖家查看自己的商铺列表
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"msg":"店铺列表查询成功"}'
+          schema:
+            type: string
+        "400":
+          description: '{"msg":"店铺列表查询失败"}'
+          schema:
+            type: string
+      summary: 查看店铺列表
+      tags:
+      - 需要登陆
+  /shop_modify:
+    put:
+      consumes:
+      - application/json
+      description: 用于卖家修改店铺信息
+      parameters:
+      - description: 修改店铺参数
+        in: body
+        name: object
+        required: true
+        schema:
+          $ref: '#/definitions/model.ShopModifyParam'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"msg":"店铺信息修改成功"}'
+          schema:
+            type: string
+        "400":
+          description: '{"msg":"店铺新秀修改失败"}'
+          schema:
+            type: string
+      summary: 修改店铺信息
+      tags:
+      - 需要登陆
+  /shop_product:
+    get:
+      consumes:
+      - application/json
+      description: 如果是买家则展示所有商品，卖家则可以根据商品状态查询对应商品
+      parameters:
+      - description: 需要查看的店铺id
+        in: query
+        name: id
+        type: integer
+      - description: 需要查看的商品状态
+        in: query
+        name: status
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"msg":"商品列表查询成功"}'
+          schema:
+            type: string
+        "400":
+          description: '{"msg":"商品列表查询失败"}'
+          schema:
+            type: string
+      summary: 查看店铺下商品
+      tags:
+      - 需要登陆
+  /user_info:
+    get:
+      consumes:
+      - application/json
+      description: 用于已登陆的用户查看个人信息，包括用户名、邮箱、头像
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"msg":"用户信息查询成功"}'
+          schema:
+            type: string
+        "400":
+          description: '{"msg":"用户信息查询失败"}'
+          schema:
+            type: string
+      summary: 查看用户信息
+      tags:
+      - 需要登陆
+swagger: "2.0"

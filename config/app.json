@@ -1,0 +1,16 @@
+{
+  "app_name": "marketplace",
+  "app_mode": "debug",
+  "app_host": "localhost",
+  "app_port": "8080",
+  "database": {
+    "username": "root",
+    "password": "dh2613738",
+    "url": "tcp(127.0.0.1:3306)/entry-task?charset=utf8&parseTime=True&loc=Local"
+  },
+  "redis": {
+    "local": "localhost:6379",
+    "password": "",
+    "db": 0
+  }
+}
