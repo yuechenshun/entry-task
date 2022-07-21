@@ -169,9 +169,9 @@ func ModifyProduct(c *gin.Context) {
 // @Tags 需要登陆
 // @Accept json
 // @Produce json
-// @Param object query model.ProductSearchParam true "商品搜索关键字"
-// @Success 200 {string} json "{"msg":"商品搜索成功"}"
-// @Failure 400 {string} json "{"msg":"商品搜索失败"}"
+// @Param object query model.ProductFlowParam true "商品推荐流关键字"
+// @Success 200 {string} json "{"msg":"商品流推荐成功"}"
+// @Failure 400 {string} json "{"msg":"商品流推荐失败"}"
 // @Router /product_search [get]
 func SearchProduct(c *gin.Context) {
 	var param model.ProductSearchParam
@@ -196,10 +196,10 @@ func SearchProduct(c *gin.Context) {
 // @Tags 需要登陆
 // @Accept json
 // @Produce json
-// @Param object query model.ProductSearchParam true "商品搜索关键字"
-// @Success 200 {string} json "{"msg":"商品流查看成功"}"
-// @Failure 400 {string} json "{"msg":"商品流查看失败"}"
-// @Router /product_flow [get]
+// @Param object query model.ProductDownParam true "商品搜索关键字"
+// @Success 200 {string} json "{"msg":"商品下架成功"}"
+// @Failure 400 {string} json "{"msg":"商品下架失败"}"
+// @Router /product_down [put]
 func ProductFlow(c *gin.Context) {
 	var param model.ProductFlowParam
 	if err := c.ShouldBind(&param); err != nil {
@@ -212,4 +212,37 @@ func ProductFlow(c *gin.Context) {
 		return
 	}
 	response.Success(c, "商品流查询成功", productList)
+}
+
+// @BasePath /api
+
+// ProductDown
+// @Summary 下架商品
+// @Schemes
+// @Description 接收商品id，下架对应商品
+// @Tags 需要登陆
+// @Accept json
+// @Produce json
+// @Param object body model.ProductSearchParam true "商品搜索关键字"
+// @Success 200 {string} json "{"msg":"商品流查看成功"}"
+// @Failure 400 {string} json "{"msg":"商品流查看失败"}"
+// @Router /product_flow [get]
+func ProductDown(c *gin.Context) {
+	var param model.ProductDownParam
+	if err := c.ShouldBind(&param); err != nil {
+		response.Fail(c, "请求参数无效")
+		return
+	}
+	username := c.MustGet("username").(string)
+	u := util.GetUserExample(username)
+	if u.Class != 1 {
+		response.Fail(c, "无法修改商品，您必须是卖家")
+		return
+	}
+	count := product.Down(param)
+	if count == 0 {
+		response.Fail(c, "商品下架失败")
+		return
+	}
+	response.Success(c, "商品下架成功", count)
 }

@@ -14,7 +14,7 @@ type Product struct {
 	CategoryId uint64    `gorm:"column:category_id" json:"category_id"` // 商品类别id
 	Type       string    `gorm:"type" json:"type"`                      // 商品种类名称
 	Detail     string    `gorm:"column:detail" json:"detail"`           // 商品详情
-	Status     uint8     `gorm:"column:status" json:"status"`           // 商品状态 1：正常 2：下架 3：审核
+	Status     uint8     `gorm:"column:status" json:"status"`           // 商品状态 1：正常 2：下架 3：编辑 4：审核
 	ShopId     uint64    `gorm:"column:shop_id" json:"shop_id"`         // 商品所属店铺id
 	CreateTime time.Time `gorm:"create_time" json:"create_time"`        // 创建时间
 	UpdateTime time.Time `gorm:"update_time" json:"update_time"`        // 修改时间
@@ -22,7 +22,7 @@ type Product struct {
 
 // ProductListParam 查询商品列表参数模型
 type ProductListParam struct {
-	CategoryId uint64 `form:"category_id"`
+	CategoryId uint64 `json:"category_id" form:"category_id"`
 }
 
 // ProductList 查询商品列表模型
@@ -38,7 +38,7 @@ type ProductList struct {
 
 // ProductDetailParam 查询商品详情参数模型
 type ProductDetailParam struct {
-	ProductId uint64 `form:"product_id"`
+	ProductId uint64 `json:"product_id" form:"product_id" binding:"required,gt=0"`
 }
 
 // ProductDetail 查询商品详情模型
@@ -58,9 +58,9 @@ type ProductDetail struct {
 type ProductCreateParam struct {
 	Name       string  `json:"name" form:"name" binding:"required"`
 	Price      float64 `json:"price" form:"price" binding:"required,gt=0"`
-	Store      uint64  `json:"store" form:"store" binging:"required,gt=0"`
+	Store      uint64  `json:"store" form:"store" binding:"required,gt=0"`
 	Image      string  `json:"image" form:"image"`
-	CategoryId uint64  `json:"category_id" form:"category_id" binging:"required,gt=0"`
+	CategoryId uint64  `json:"category_id" form:"category_id" binding:"required,gt=0"`
 	Type       string  `json:"type" form:"type"`
 	Detail     string  `json:"detail" form:"detail"`
 	ShopId     uint64  `json:"shop_id" form:"shop_id"`
@@ -68,7 +68,7 @@ type ProductCreateParam struct {
 
 // ProductDeleteParam 删除商品参数模型
 type ProductDeleteParam struct {
-	ProductId uint64 `json:"product_id" form:"product_id"`
+	ProductId uint64 `json:"product_id" form:"product_id" binding:"required,gt=0"`
 }
 
 // ProductModifyParam 修改商品参数模型
@@ -76,9 +76,9 @@ type ProductModifyParam struct {
 	Id         uint64  `json:"id" form:"id" binding:"required,gt=0"`
 	Name       string  `json:"name" form:"name" binding:"required"`
 	Price      float64 `json:"price" form:"price" binding:"required,gt=0"`
-	Store      uint64  `json:"store" form:"store" binging:"required,gt=0"`
+	Store      uint64  `json:"store" form:"store" binding:"required,gt=0"`
 	Image      string  `json:"image" form:"image"`
-	CategoryId uint64  `json:"category_id" form:"category_id" binging:"required,gt=0"`
+	CategoryId uint64  `json:"category_id" form:"category_id" binding:"required,gt=0"`
 	Type       string  `json:"type" form:"type"`
 	Detail     string  `json:"detail" form:"detail"`
 	ShopId     uint64  `json:"shop_id" form:"shop_id"`
@@ -112,4 +112,9 @@ type ProductFlow struct {
 	Image  string  `json:"image"`
 	Type   string  `json:"type"`
 	Detail string  `json:"detail"`
+}
+
+// ProductDownParam 下架商品参数模型
+type ProductDownParam struct {
+	ProductId uint64 `json:"product_id" form:"product_id" binding:"required,gt=0"`
 }

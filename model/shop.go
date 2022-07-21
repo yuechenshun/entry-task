@@ -43,8 +43,8 @@ type ShopDeleteParam struct {
 
 // ShopProductParam 店铺商品参数模型
 type ShopProductParam struct {
-	Id     uint64 `json:"id" form:"id"`         // 需要查看的店铺id
-	Status uint8  `json:"status" form:"status"` // 需要查看的商品状态
+	Id     uint64 `json:"id" form:"id" binding:"required,gt=0"` // 需要查看的店铺id
+	Status uint8  `json:"status" form:"status"`                 // 需要查看的商品状态
 }
 
 // ShopProduct 店铺商品信息模型

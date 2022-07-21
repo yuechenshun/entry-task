@@ -33,6 +33,7 @@ func Router(cfg *Config) {
 		api.PUT("/product_modify", controller.ModifyProduct)     // 编辑商品
 		api.GET("/product_search", controller.SearchProduct)     // 搜索商品
 		api.GET("/product_flow", controller.ProductFlow)         //查看商品推荐流
+		api.PUT("/product_down", controller.ProductDown)         // 下架商品
 		// 店铺相关
 		api.POST("/shop_create", controller.CreateShop)      // 创建店铺
 		api.GET("/shop_list", controller.ViewShopList)       // 查看店铺列表

@@ -73,7 +73,7 @@ func (con *WebProductServer) Modify(param model.ProductModifyParam) int64 {
 		CategoryId: param.CategoryId,
 		Type:       param.Type,
 		Detail:     param.Detail,
-		Status:     2,
+		Status:     3,
 		ShopId:     param.ShopId,
 		UpdateTime: time.Now(),
 	}
@@ -90,7 +90,7 @@ func (con *WebProductServer) Search(param model.ProductSearchParam) []model.Prod
 		global.Db.Table("products").Where("status = 1").Find(&productList)
 		return productList
 	}
-	global.Db.Table("products").Where("name like ?", "%"+keyWord+"%").Find(&productList)
+	global.Db.Table("products").Where("name like ? and status = 1", "%"+keyWord+"%").Find(&productList)
 	return productList
 }
 
@@ -100,8 +100,18 @@ func (con *WebProductServer) Flow(param model.ProductFlowParam) []model.ProductF
 	flowList := param.ProductList
 	for _, v := range flowList {
 		var product model.ProductFlow
-		global.Db.Table("products").Where("id = ?", v).Find(&product)
+		global.Db.Table("products").Where("id = ? and status = 1", v).Find(&product)
 		productList = append(productList, product)
 	}
 	return productList
+}
+
+// Down 下架商品
+func (con *WebProductServer) Down(param model.ProductDownParam) int64 {
+	product := model.Product{
+		Id:     param.ProductId,
+		Status: 2,
+	}
+	rows := global.Db.Model(&product).Updates(product).RowsAffected
+	return rows
 }
